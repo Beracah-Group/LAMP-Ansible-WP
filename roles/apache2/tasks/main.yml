@@ -1,0 +1,11 @@
+---
+# tasks file for apache2
+- name: Update software packages cache
+  apt:
+    update_cache: yes 
+    cache_valid_time: 3600
+
+- name: Install apache2
+  apt:
+    name: apache2
+    state: present

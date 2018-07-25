@@ -1,0 +1,9 @@
+---
+- hosts: lampserver
+  remote_user: vagrant
+  become: yes
+  roles:
+   - apache2
+   - mysql
+   - php
+   - wordpress

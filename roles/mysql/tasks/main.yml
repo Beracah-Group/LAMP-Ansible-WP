@@ -1,0 +1,28 @@
+---
+# tasks file for mysql
+ - name: Install Mysql
+   apt:
+     name: "{{ item }}"
+     state: present
+   with_items:
+     - mysql-server
+     - mysql-client
+     - python-mysqldb
+     - php5-mysql
+
+ - name: Create Mysql Database
+   mysql_db: 
+     name: "{{ wp_mysql_db }}"
+     login_user: "{{ login_user }}"
+     login_password: ""
+     state: present
+
+ - name: Create Mysql User
+   mysql_user:
+     name: "{{ wp_mysql_user }}"
+     password: "{{ wp_mysql_pass }}"
+     priv: '*.*:ALL'
+     login_user: "{{ login_user }}"
+     login_password: ""
+     state: present
+
