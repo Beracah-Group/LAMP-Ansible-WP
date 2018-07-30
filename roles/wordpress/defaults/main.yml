@@ -1,2 +1,10 @@
 ---
 # defaults file for wordpress
+wp_auth_key: sJQYigUqt-y VNL6(Zna@Tz*QUXtH= /[168l+w8H_%PVD<XI-]:WgogX9L@[OY1
+wp_secure_auth_key: h&,5=u%iH1~fNN,|! K}C$b7,6T+2EQm!5~~q|Zx%B0}Ne)A~&ZlrFF+F}>Eznwp
+wp_logged_in_key: ^(bg34b>kq9X%v^/a DbAfQk^|DB6V8+U&n*/Hn@b|?:`43+&7KB.k9nms- acpa
+wp_nonce_key: _Y>Q@Dk-H%sdm0UW|xIce/L|u2aj2:*uravabDBbo,VfbsrL8-r[U2XW7DZ9$^!O
+wp_auth_salt: OSEQMqybeH_,^_&t):q,rY?qu9i9#[eL1@MtaVQZJt<EFK_.$0C2D4CKT>NQ-DF+
+wp_secure_auth_salt: 6SuNlc*W%(]{wU8C[SF?Yaz< ](YLagyb)#Im<Y5Z={&3M9:`a{,)*13m8MDm0QP
+wp_logged_in_salt: C2yx(+|2?;|9ME.hR-uhll^@gD#gV9>3#.xaT</RHv/$a)<fHV? ^7l{REe]>=*~
+wp_nonce_salt: 1KRZ5!~:uzGa[|TKxXi~mukA1{KY=~SNc.sw={TN1<1:1LBK*:@-yBwo7=]++%G+

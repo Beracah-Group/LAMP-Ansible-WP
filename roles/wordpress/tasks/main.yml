@@ -32,3 +32,23 @@
       - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{wp_mysql_db}}');"}
       - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{wp_mysql_user}}');"}
       - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{wp_mysql_pass}}');"}
+
+ - name: Update the secrets
+   lineinfile:
+     path: /var/www/html/wordpress/wp-config.php
+     regexp: "{{ item.regexp }}"
+     line: "{{ item.line }}"
+   with_items:
+     - {'regexp': "define\\('AUTH_KEY',         '(.)+'\\);", 'line': "define('AUTH_KEY',         '{{wp_auth_key}}');"}
+     - {'regexp': "define\\('SECURE_AUTH_KEY',  '(.)+'\\);", 'line': "define('SECURE_AUTH_KEY',  '{{wp_secure_auth_key}}');"}
+     - {'regexp': "define\\('LOGGED_IN_KEY',    '(.)+'\\);", 'line': "define('LOGGED_IN_KEY',    '{{wp_logged_in_key}}');"}
+     - {'regexp': "define\\('NONCE_KEY',        '(.)+'\\);", 'line': "define('NONCE_KEY',        '{{wp_nonce_key}}');"}
+     - {'regexp': "define\\('AUTH_SALT',        '(.)+'\\);", 'line': "define('AUTH_SALT',        '{{wp_auth_salt}}');"}
+     - {'regexp': "define\\('SECURE_AUTH_SALT', '(.)+'\\);", 'line': "define('SECURE_AUTH_SALT', '{{wp_secure_auth_salt}}');"}
+     - {'regexp': "define\\('LOGGED_IN_SALT',   '(.)+'\\);", 'line': "define('LOGGED_N_SALT',    '{{wp_logged_in_salt}}');"}
+     - {'regexp': "define\\('NONCE_SALT',       '(.)+'\\);", 'line': "define('NONCE_SALT',       '{{wp_nonce_salt}}');"}
+
+ - name: Set Filesystem method to direct
+   lineinfile:
+     path: /var/www/html/wordpress/wp-config.php
+     line: "define('FS_METHOD', 'direct');"
