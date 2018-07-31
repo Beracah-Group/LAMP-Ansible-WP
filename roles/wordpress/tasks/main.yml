@@ -52,3 +52,25 @@
    lineinfile:
      path: /var/www/html/wordpress/wp-config.php
      line: "define('FS_METHOD', 'direct');"
+ 
+ - name: Update the owner of the project to the user and group
+   file:
+     path: /var/www/html/wordpress
+     owner:  vagrant
+     group: www-data
+     mode: 02770 
+
+ - name: change the write access to allow change in themes and plugins
+   file:
+     path: /var/www/html/wordpress/wp-content
+     mode: "g+w"
+
+ - name: Give write access to themes
+   file:
+     path: /var/www/html/wordpress/wp-content/themes
+     mode: "g+w"
+
+ - name: Give write access to plugins
+   file:
+     path: /var/www/html/wordpress/wp-content/themes
+     mode: "g+w"
