@@ -5,7 +5,94 @@
     update_cache: yes 
     cache_valid_time: 3600
 
-- name: Install apache2
+- name: Install apache2 and pip
   apt:
-    name: apache2
+    name: "{{ item }}"
     state: present
+  with_items:
+    - apache2
+    - python-pip
+    - python-dev
+    - libssl-dev
+    - libffi-dev
+    - python-apt
+
+#- name: Install PyOpenSSL/dependancies
+#  pip:
+#    name: "{{ item }}"
+#    state: forcereinstall
+#  with_items:
+#    - setuptools
+#    - pyopenssl
+#
+#- name: Generate an OpenSSL private key
+#  openssl_privatekey:
+#    path: /etc/ssl/private/kanyi.ml.pem
+#
+#- name: Generate an OpenSSL CSR
+#  openssl_csr:
+#    path: /etc/ssl/private/kanyi.ml.csr
+#    privatekey_path: /etc/ssl/private/kanyi.ml.pem
+#    common_name: kanyi.ml
+#
+#- name: Generate a Self Signed OpenSSL certificate
+#  openssl_certificate:
+#    path: /etc/ssl/certs/kanyi.ml.crt
+#    privatekey_path: /etc/ssl/private/kanyi.ml.pem
+#    csr_path: /etc/ssl/private/kanyi.ml.csr
+#    provider: selfsigned
+#
+- name: Generate Self signed cert
+  command: openssl req -x509 -nodes -subj '/CN={{ inventory_hostname }}' -days 365 -newkey rsa:4096 -sha256 -keyout {{ item.key }} -out {{ item.cert }} creates={{ item.cert }}
+  with_items:
+    - {'key': /etc/ssl/private/kanyi.ml.pem, 'cert': /etc/ssl/certs/kanyi.ml.crt}
+
+- name: BackUp the default ssl config
+  command: cp /etc/apache2/sites-available/default-ssl.conf /etc/apache2/sites-available/default-ssl.conf.bak
+
+- name: Modify the Default Apache SSL File
+  lineinfile:
+    path: /etc/apache2/sites-available/default-ssl.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "ServerAdmin webmaster@localhost", 'line': "ServerAdmin admin@kanyi.ml"}
+    - {'regexp': "DocumentRoot /var/www/html", 'line': "DocumentRoot /var/www/html/wordpress"}
+
+- name: Insert ServerName
+  lineinfile:
+    path: /etc/apache2/sites-available/default-ssl.conf
+    insertafter: "ServerAdmin admin@kanyi.ml" 
+    line: "ServerName kanyi.ml"
+
+- name: Direct HTTP to HTTPS
+  lineinfile:
+    path: /etc/apache2/sites-available/000-default.conf
+    insertafter: "#Include conf-available/serve-cgi-bin.conf"
+    line: 'Redirect permanent  "/" "https://kanyi.ml/"'
+
+- name: Adjusting firewall to allow https traffic
+  ufw:
+    rule: allow
+    name: Apache Full
+
+- name: Delete apache to remove redudant
+  ufw:
+    rule: allow
+    name: Apache
+    delete: yes
+
+- name: Enable Apache SSL
+  apache2_module:
+    state: present
+    name: ssl
+
+- name: Enable Apache Headers
+  apache2_module:
+    state: present
+    name: headers
+
+- name: Enable SSL Virtual host
+  command: a2ensite default-ssl
+  notify:
+    - restart apache

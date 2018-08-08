@@ -1,10 +1,13 @@
 ---
 # tasks file for wordpress
- - name: Download Wp
-   get_url:
-     url: https://wordpress.org/latest.tar.gz
-     dest: /tmp/wordpress.tar.gz
-     validate_certs: no
+# - name: Download Wp
+#   get_url:
+#     url: https://wordpress.org/latest.tar.gz
+#     dest: /tmp/wordpress.tar.gz
+#     validate_certs: no
+
+ - name: download WP with wget
+   command: wget https://wordpress.org/latest.tar.gz -O /tmp/wordpress.tar.gz
 
  - name: Extract Wp
    unarchive:

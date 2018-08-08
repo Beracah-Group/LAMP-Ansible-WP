@@ -8,13 +8,16 @@
      - mysql-server
      - mysql-client
      - python-mysqldb
-     - php5-mysql
+     - libmysqlclient-dev
+
+ - name: Copy my.conf file
+   command: cp /etc/mysql/my.cnf /root/.my.cnf
 
  - name: Create Mysql Database
    mysql_db: 
      name: "{{ wp_mysql_db }}"
      login_user: "{{ login_user }}"
-     login_password: ""
+     login_password: "{{ login_password }}"
      state: present
 
  - name: Create Mysql User
@@ -23,6 +26,6 @@
      password: "{{ wp_mysql_pass }}"
      priv: '*.*:ALL'
      login_user: "{{ login_user }}"
-     login_password: ""
+     login_password: "{{ login_password }}"
      state: present
 

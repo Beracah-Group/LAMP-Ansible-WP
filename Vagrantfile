@@ -8,18 +8,21 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "lamp-ansible"  
-  config.vm.network "private_network", ip: "192.168.33.30"
+  config.vm.network "private_network", ip: "192.168.33.21"
 
-  # shell provisioner to install ansible
-  config.vm.provision "shell", inline: <<-SHELL
-     sudo apt-add-repository ppa:ansible/ansible
-     sudo apt-get update
-     sudo apt-get install -y ansible
-   SHELL
-
-  # Ansible Local Provisioner
-  config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "site.yml"
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "512"
   end
+  # shell provisioner to install ansible
+#  config.vm.provision "shell", inline: <<-SHELL
+#     sudo apt-add-repository ppa:ansible/ansible
+#     sudo apt-get update
+#     sudo apt-get install -y ansible
+#   SHELL
+#
+  # Ansible Local Provisioner
+#  config.vm.provision "ansible_local" do |ansible|
+#    ansible.playbook = "site.yml"
+#  end
 
 end
